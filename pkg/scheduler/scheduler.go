@@ -13,8 +13,8 @@ import (
 
 	"task-scheduler/pkg/common"
 
+	"github.com/jackc/pgx/pgtype"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 // CommandRequest represents the structure of the request body
@@ -180,30 +180,30 @@ func (s *SchedulerServer) handleGetTaskStatus(w http.ResponseWriter, r *http.Req
 		FailedAt:    "",
 	}
 
-	// // Set the scheduled_at time if non-null.
-	// if task.ScheduledAt.Status == 2 {
-	// 	response.ScheduledAt = task.ScheduledAt.Time.String()
-	// }
+	// Set the scheduled_at time if non-null.
+	if task.ScheduledAt.Status == 2 {
+		response.ScheduledAt = task.ScheduledAt.Time.String()
+	}
 
-	// // Set the picked_at time if non-null.
-	// if task.PickedAt.Status == 2 {
-	// 	response.PickedAt = task.PickedAt.Time.String()
-	// }
+	// Set the picked_at time if non-null.
+	if task.PickedAt.Status == 2 {
+		response.PickedAt = task.PickedAt.Time.String()
+	}
 
-	// // Set the started_at time if non-null.
-	// if task.StartedAt.Status == 2 {
-	// 	response.StartedAt = task.StartedAt.Time.String()
-	// }
+	// Set the started_at time if non-null.
+	if task.StartedAt.Status == 2 {
+		response.StartedAt = task.StartedAt.Time.String()
+	}
 
-	// // Set the completed_at time if non-null.
-	// if task.CompletedAt.Status == 2 {
-	// 	response.CompletedAt = task.CompletedAt.Time.String()
-	// }
+	// Set the completed_at time if non-null.
+	if task.CompletedAt.Status == 2 {
+		response.CompletedAt = task.CompletedAt.Time.String()
+	}
 
-	// // Set the failed_at time if non-null.
-	// if task.FailedAt.Status == 2 {
-	// 	response.FailedAt = task.FailedAt.Time.String()
-	// }
+	// Set the failed_at time if non-null.
+	if task.FailedAt.Status == 2 {
+		response.FailedAt = task.FailedAt.Time.String()
+	}
 
 	// Convert the response struct to JSON
 	jsonResponse, err := json.Marshal(response)
