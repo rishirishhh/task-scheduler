@@ -1,0 +1,32 @@
+FROM golang:1.22.3
+
+RUN apt-get update && apt-get install -y \
+    protobuf-compiler \
+    golang-go \
+    git
+
+RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY pkg/ ./pkg/
+COPY cmd/scheduler/main.go .
+
+# Ensure the script is executable
+RUN chmod +x ./pkg/grpcapi/build.sh
+
+# Run the build script
+RUN ./pkg/grpcapi/build.sh
+
+# Rest of your Dockerfile commands...
+
+
+# Build the scheduler application
+RUN go build -o scheduler main.go
+
+# Run the worker when the container launches
+CMD ["./scheduler", "--scheduler_port=:8081"]
